@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>MAPS-Admin</title>
+            </f:facet>
+
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                    overflow:visible !important;;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+                .ui-layout-north,  .ui-layout-center, .ui-layout-left{
+                    border: none;
+                }
+                .ui-datagrid-no-border>.ui-datagrid-content {
+                    border: none;
+                }  
+                .ui-datatable table {
+                    table-layout: auto
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+            <p:layout fullPage="true" >
+
+                <p:layoutUnit id="top"  position="north" size="75"  style=" background-color:appworkspace " >
+                    <h:form id="formid" onkeypress="if (event.keyCode === 13) {
+                                document.getElementById('formid:loginLink').click();
+                                return false;
+                            }">
+                        <h:panelGrid columns="3"   >
+                            <h:commandLink  title="index" actionListener="#{main.dataGrid.goIndice()}"   style ="border: none; "  >   
+                                <p:graphicImage id="tab3Img" value="img/logoMini.jpg"  />                      
+                            </h:commandLink >  
+                            <h:panelGrid columns="2" style="margin-left:  200px"  >
+                                <p:inputText value="#{main.dataGrid.searchBox}"   style=" width: 500px; height: 25px;  font-size: 22px; "  />
+
+                                <p:commandLink  id="loginLink"  title="Procurar" actionListener="#{main.dataGrid.search()}"   style ="border: none; " update=":form:pacientes, :form1"  >    
+                                    <p:graphicImage value="img/search_icon.png"  height="35px"   width="70px" style ="border: none;"    />                      
+                                </p:commandLink>  
+                            </h:panelGrid>
+                            <p:menuButton value="#{main.nomedoutor}" style="float:right; font-size: 10px; margin-left:  300px " >
+                                <p:menuitem value="Perfil" url="/perfil.xhtml"  icon="ui-icon-person" style=" font-size: 10px" />
+                                <p:menuitem value="LogOut" icon="ui-icon-closethick" style="font-size: 10px" actionListener="#{main.logout()}" />
+                            </p:menuButton>
+                        </h:panelGrid>
+                    </h:form>
+                </p:layoutUnit>
+
+
+
+                <p:layoutUnit id="left"  position="west" size="210" header="Filtro" resizable="false" collapsible="true" 
+                              style="text-align:center; background-color:  menu"  >
+                    <h:form id="form1">
+                        <h5>Sexo</h5>
+                        <h:panelGrid columns="3"  >
+                            <p:selectOneRadio   id="console" value="#{main.dataGrid.gender}" style=" alignment-adjust:  central;font-size: 12px" >
+                                <p:ajax event="valueChange" listener="#{main.dataGrid.genderChange()}" update=":form:pacientes"/>
+                                <f:selectItem itemLabel="Todos " itemValue="N" />
+                                <f:selectItem itemLabel="M" itemValue="M" />
+                                <f:selectItem itemLabel="F" itemValue="F" />
+                            </p:selectOneRadio  >
+                        </h:panelGrid>
+                        <p:separator />
+                        <h5>Idade</h5>
+                        <h:panelGrid columns="1" >
+                            <h:outputText id="displayRange" value="Idade entre #{main.dataGrid.numberLow} e #{main.dataGrid.numberHigh}" style=" font-size: 12px" />
+                            <p:slider for="txt6,txt7" minValue="#{main.dataGrid.numberLowAllow}" maxValue="#{main.dataGrid.numberHighAllow}" display="displayRange" style="width: 150px; margin-left: 10px; font-size: 12px" range="true" displayTemplate="Idade entre {min} e {max}" > 
+                                <p:ajax event="slideEnd"  process="@all"  listener="#{main.dataGrid.genderChange()}" update=":form:pacientes"/> 
+                            </p:slider>
+                        </h:panelGrid>
+                        <h:inputHidden id="txt6" value="#{main.dataGrid.numberLow}"   />
+                        <h:inputHidden id="txt7" value="#{main.dataGrid.numberHigh}" />
+                        <p:separator />
+                        <h:panelGrid columns="2" >
+                            <h6>Adicionado Recentemente</h6>
+                            <p:selectBooleanCheckbox label="Adicionado Recentemente" value="#{main.dataGrid.addRecentle}">
+                                <p:ajax  listener="#{main.dataGrid.genderChange()}" update=":form:pacientes"/>
+                            </p:selectBooleanCheckbox>
+                        </h:panelGrid>
+                        <p:separator />
+                        <br></br>  <br></br>  <br></br>                      
+
+                        <p:commandButton id="but" value="#{main.listaPerigo.title}" icon="ui-icon-alert" actionListener="#{main.listaPerigo.open()}" rendered="#{main.listaPerigo.haPerigo}" style=" width: 160px; float:  bottom">                  
+                            <p:ajax event="dialogReturn" listener="#{main.goPerigo}" update="but" />
+                            <p:ajax event="click" update="but" />
+                        </p:commandButton>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit id="center" position="center">
+                    <h:form id="form">
+                        <p:dataTable   var="paciente" value="#{main.dataGrid.cars}" selectionMode="single" resizableColumns="true" rowKey="#{paciente.name}" id="pacientes" selection="#{main.dataGrid.selectedCar}" styleClass="ui-datagrid-no-border" style=" font-size: 14px; text-align:  center">
+                            <p:ajax event="rowSelect" listener="#{main.go}"/>
+                            <p:column width="50px"> 
+                                <p:graphicImage id="Img" value="#{paciente.img}" height="65px" width="45px"/>
+                            </p:column>   
+                            <p:column headerText="Nome" sortBy="#{paciente.name}">     
+                                <h:outputText value="#{paciente.name}" />
+                            </p:column> 
+                            <p:column headerText="SNS" sortBy="#{paciente.p.sns}" width="50px">     
+                                <h:outputText value="#{paciente.p.sns}" />
+                            </p:column>   
+                            <p:column headerText="Email" sortBy="#{paciente.p.mail}">      
+                                <h:outputText value="#{paciente.p.mail}" />
+                            </p:column>   
+                            <p:column headerText="Sexo" sortBy="#{paciente.p.gender}" width="30px">        
+                                <h:outputText value="#{paciente.p.gender}" />  
+                            </p:column>  
+                            <p:column headerText="Data Nascimento" sortBy="#{paciente.p.borndate}" >        
+                                <h:outputText value="#{paciente.p.borndate}" />  
+                            </p:column>  
+                        </p:dataTable>
+                    </h:form>
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+    </f:view>
+</html>

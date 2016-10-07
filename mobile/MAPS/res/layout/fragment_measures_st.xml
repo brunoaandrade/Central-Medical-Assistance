@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray" >
+
+    <Button
+        android:id="@+id/save_button_omron"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="41dp"
+        android:minHeight="100dp"
+        android:minWidth="200dp"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:text="@string/save_button_text" />
+
+    <Button
+        android:id="@+id/nMeasure_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/save_button_omron"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="39dp"
+        android:minHeight="100dp"
+        android:minWidth="200dp"
+        android:textSize="30sp"
+        android:text="@string/nMeasure_button_text" />
+
+    <TextView
+        android:id="@+id/temp_mInsertion_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="29dp"
+        android:layout_marginTop="93dp"
+        android:text="@string/temp_text"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/temp_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/temp_mInsertion_label"
+        android:layout_alignBottom="@+id/temp_mInsertion_label"
+        android:layout_alignRight="@+id/nMeasure_button"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/choose_temp_sensor_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/temp_value"
+        android:layout_alignBottom="@+id/temp_value"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="@string/temp_unit_c"
+        android:textSize="50sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

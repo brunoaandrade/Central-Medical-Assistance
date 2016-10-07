@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Valores Perigosos</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 70%;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:scrollPanel style="width:630px;height:520px"> 
+                <p:dataTable id="dt" var="car" value="#{main.listaPerigo.lista}" scrollWidth="5px" >
+
+                    <p:column headerText="nome">
+                        <h:outputText value="#{car.paciente}" />
+                    </p:column>
+                    <p:column headerText="Data">
+                        <h:outputText value="#{car.time}" />
+                    </p:column>
+                    <p:column headerText="id Medição">
+                        <h:outputText value="#{car.nome}" />
+                    </p:column>
+
+                    <p:columnGroup type="header">
+                        <p:row>         
+                            <p:column rowspan="2" headerText="Nome"  />
+                            <p:column rowspan="2" headerText="Data" width="10px" />
+                            <p:column rowspan="2" headerText="Tipo" />
+                            <p:column colspan="1" headerText="Temperatura" width="10px"/>
+                            <p:column colspan="3" headerText="Pressão Arterial" />
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="1" headerText="Tº" />
+                            <p:column colspan="1" headerText="D" />
+                            <p:column colspan="1" headerText="S" />
+                            <p:column colspan="1" headerText="Freq" />
+                        </p:row>
+                    </p:columnGroup>
+
+
+                    <p:column headerText="Id s" >
+                        <h:outputText value="#{car.taMeasure}" />
+                    </p:column>
+                    <p:column headerText="Id d">
+                        <h:outputText value="#{car.daMeasure}" />
+                    </p:column>
+                    <p:column headerText="Id f">
+                        <h:outputText value="#{car.saMeasure}" />
+                    </p:column>
+                    <p:column headerText="Id g">
+                        <h:outputText value="#{car.frqMeasure}" />
+                    </p:column>
+
+
+                    <p:column headerText="Select Car" width="10px">
+                        <p:commandButton icon="ui-icon-circle-arrow-e" actionListener="#{main.listaPerigo.selectCarFromDialog(car)}"  />
+                    </p:column>
+                    <p:column headerText="Close" width="10px">
+                        <p:commandButton icon=" ui-icon-circle-close" actionListener="#{main.listaPerigo.selectCarToDelete(car)}" update=":form" />
+                    </p:column>
+                </p:dataTable>
+            </p:scrollPanel>
+        </h:form>
+    </h:body>
+
+</html>

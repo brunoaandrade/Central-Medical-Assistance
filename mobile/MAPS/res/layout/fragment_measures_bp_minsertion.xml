@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray" >
+
+    <EditText
+        android:id="@+id/max_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/temp_mInsertion_label"
+        android:layout_alignBottom="@+id/temp_mInsertion_label"
+        android:layout_marginLeft="17dp"
+        android:layout_toRightOf="@+id/temp_mInsertion_label"
+        android:ems="2"
+        android:inputType="number"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/temp_mInsertion_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/min_label"
+        android:layout_marginLeft="27dp"
+        android:layout_marginTop="23dp"
+        android:text="@string/max_label_text"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/min_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/temp_mInsertion_value"
+        android:layout_alignLeft="@+id/temp_mInsertion_label"
+        android:text="@string/min_label_text"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/temp_mInsertion_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/max_value"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="70dp"
+        android:ems="2"
+        android:inputType="number"
+        android:textSize="40sp" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/save_button_mInsertion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="56dp"
+        android:minHeight="100dp"
+        android:minWidth="200dp"
+        android:text="@string/save_button_text"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/bpm_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/temp_mInsertion_label"
+        android:layout_below="@+id/max_value"
+        android:layout_marginTop="23dp"
+        android:text="@string/bpm_text"
+        android:textSize="28sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/bpm_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/bpm_label"
+        android:layout_alignBottom="@+id/bpm_label"
+        android:layout_alignLeft="@+id/max_value"
+        android:ems="2"
+        android:inputType="number"
+        android:textSize="28sp" />
+
+</RelativeLayout>

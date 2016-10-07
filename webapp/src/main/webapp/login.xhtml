@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>MAPS-Login</title>
+            </f:facet>
+
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                    overflow:visible !important;;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+                .ui-layout-center{
+                    border: none;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <p:layoutUnit id="top" position="center"  style =" text-align : center; border: none; "  >
+                <h:form id="form">  
+                    <h:outputLink  id="loginLink" value="javascript:void(0)" onclick="PF('dlg').show()" title="login" style ="border: none;" >   
+                        <p:graphicImage value="img/Logo.jpg"  height="130px"   width="354px" style ="border: none;" />                      
+                    </h:outputLink>  
+
+                    <p:growl id="growl" showDetail="true" life="3000" />  
+
+                    <p:dialog id="dialog" header="Login" widgetVar="dlg" resizable="false">  
+                        <h:panelGrid columns="2" cellpadding="5">  
+                            <h:outputLabel for="username" value="Username:" />  
+                            <p:inputText value="#{main.lb.username}"  id="username" required="true" label="username" />  
+                            <h:outputLabel for="password" value="Password:" />  
+                            <h:inputSecret value="#{main.lb.password}"  id="password" required="true" label="password" />  
+
+                            <f:facet name="footer">  
+                                <p:commandButton id="loginButton" value="Login" update="growl" actionListener="#{main.login}"   
+                                                 oncomplete="handleLoginRequest(xhr, status, args)"/>  
+                            </f:facet>  
+                        </h:panelGrid>
+                    </p:dialog>  
+
+                </h:form>  
+            </p:layoutUnit> 
+
+            <script type="text/javascript">
+                function handleLoginRequest(xhr, status, args) {
+                    if (args.validationFailed || !args.loggedIn) {
+                        PF('dlg').jq.effect("shake", {times: 5}, 100);
+                    }
+                    else {
+                        PF('dlg').hide();
+                        $('#loginLink').fadeOut();
+                    }
+                }
+            </script>  
+        </h:body>
+    </f:view>
+
+</html>

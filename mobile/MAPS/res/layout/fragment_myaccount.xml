@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray" >
+
+        <TextView
+            android:id="@+id/patientName_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="33dp"
+            android:textSize="40sp" />
+
+        <View
+            android:id="@+id/sep_bp"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/patientName_value"
+            android:layout_marginTop="30dp"
+            android:background="@android:color/darker_gray" />
+
+        <TextView
+            android:id="@+id/idPatient_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/sep_bp"
+            android:layout_marginLeft="19dp"
+            android:layout_marginTop="22dp"
+            android:textSize="24sp"
+            android:text="@string/idPatient_text" />
+
+        <TextView
+            android:id="@+id/bdPatient_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/idPatient_label"
+            android:layout_below="@+id/idPatient_label"
+            android:layout_marginTop="23dp"
+            android:text="@string/patientBirth"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/addressPatient_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/bdPatient_label"
+            android:layout_below="@+id/bdPatient_label"
+            android:layout_marginTop="24dp"
+            android:text="@string/patientAddress"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/bdPatient_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/addressPatient_label"
+            android:layout_marginLeft="7dp"
+            android:layout_toRightOf="@+id/bdPatient_label"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/addressPatient_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/addressPatient_label"
+            android:layout_alignBottom="@+id/addressPatient_label"
+            android:layout_marginLeft="9dp"
+            android:layout_toRightOf="@+id/addressPatient_label"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/idPatient_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/idPatient_label"
+            android:layout_alignBottom="@+id/idPatient_label"
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/idPatient_label"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+        
+</RelativeLayout>

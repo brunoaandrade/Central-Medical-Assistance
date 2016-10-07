@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.app.maps"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" >
+    </uses-permission>
+
+    <uses-sdk
+        android:minSdkVersion="17"
+        android:targetSdkVersion="19" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/MAPSTheme" >
+        <activity
+            android:name="com.app.maps.LoginActivity"
+            android:allowBackup="true"
+            android:allowClearUserData="true"
+            android:hardwareAccelerated="true"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.app.maps.MainActivity"
+            android:allowBackup="true"
+            android:allowClearUserData="true"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:hardwareAccelerated="true"
+            android:label="@string/app_name"
+            android:vmSafeMode="true" >
+            
+        </activity>
+
+        <service android:exported="true" android:name="com.signove.health.service.HealthService" 
+            android:enabled="true" android:stopWithTask="false" android:permission="android.permission.BLUETOOTH">
+            <intent-filter>
+                 <action
+                         android:name="com.signove.health.service.HealthService" />
+                 </intent-filter>
+        </service>
+	<service android:name="com.signove.health.service.BluetoothHDPService" />
+        
+        
+        <service
+            android:name="com.app.maps.services.ReceiveAction"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.INTERNET"
+            android:stopWithTask="false" >
+        </service>
+
+        <receiver
+            android:name="notificationSystem.PrescriptionReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="NEW_PRESCRIPTION" />
+                <action android:name="NEW_MEASURE" />
+            </intent-filter>
+        </receiver>
+        <receiver
+            android:name="notificationSystem.TimeAlarm"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+        <receiver
+            android:name="notificationSystem.TimeAlarmToStop"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+
+        <activity
+            android:name="com.app.maps.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/p_type_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dip"
+        android:adjustViewBounds="true"
+        android:maxWidth="80dp"
+        android:contentDescription="TODO"
+        android:src="@drawable/ic_launcher" />
+
+    <TextView
+        android:id="@+id/prescription_finish"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/p_type_icon"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="Prescription Finish"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/prescription_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/prescription_finish"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/p_type_icon"
+        android:gravity="center_vertical"
+        android:text="Prescription Name"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tts_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/prescription_name"
+        android:layout_alignBottom="@+id/prescription_name"
+        android:layout_alignRight="@+id/prescription_name"
+        android:text="Próxima às:"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/next_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/prescription_finish"
+        android:layout_alignBottom="@+id/prescription_finish"
+        android:layout_alignParentRight="true"
+        android:text="Small Text"
+        android:textSize="13sp"/>
+
+    <ImageView
+        android:id="@+id/img_warning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tts_text"
+        android:layout_marginRight="23dp"
+        android:layout_toLeftOf="@+id/tts_text"
+        android:src="@drawable/ic_warning" 
+        android:visibility="invisible"
+        android:contentDescription="Warning"/>
+
+</RelativeLayout>

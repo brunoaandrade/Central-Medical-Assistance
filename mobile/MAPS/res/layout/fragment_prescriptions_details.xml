@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray" >
+
+    <View
+        android:id="@+id/sep_bp"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/p_type_icon_details"
+        android:layout_marginTop="27dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/start_time_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/start_time_label"
+        android:layout_below="@+id/start_time_label"
+        android:text="null" />
+
+    <View
+        android:id="@+id/sep_temp"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/measure_took_button"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="17dp"
+        android:background="@android:color/darker_gray" />
+
+    <Button
+        android:id="@+id/measure_took_button"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="12dp"
+        android:layout_marginRight="11dp"
+        android:text="Tomar"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/end_time_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/end_time_label"
+        android:layout_below="@+id/end_time_label"
+        android:text="null" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/end_time_value"
+        android:layout_marginTop="20dp"
+        android:background="@android:color/darker_gray" />
+
+    <TextView
+        android:id="@+id/hours_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/start_time_value"
+        android:layout_alignBottom="@+id/start_time_value"
+        android:layout_alignRight="@+id/measure_took_button"
+        android:layout_toRightOf="@+id/p_type_icon_details"
+        android:background="@drawable/back_hour_list"
+        android:maxLines="3"
+        android:scrollbars="vertical"
+        android:text="nenhuma\n \n\n" />
+
+    <Button
+        android:id="@+id/history_button"
+        android:layout_width="150dp"
+        android:layout_height="70dp"
+        android:layout_alignBaseline="@+id/measure_took_button"
+        android:layout_alignBottom="@+id/measure_took_button"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="21dp"
+        android:text="Histórico"
+        android:textSize="22sp" />
+
+    <ImageView
+        android:id="@+id/image_warn"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_above="@+id/view1"
+        android:layout_alignTop="@+id/warning_label"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@+id/warning_label"
+        android:src="@drawable/ic_warning" />
+
+    <TextView
+        android:id="@+id/presc_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:text="Titulo da prescrição"
+        android:textSize="28dp" />
+
+    <ImageView
+        android:id="@+id/p_type_icon_details"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/presc_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:adjustViewBounds="true"
+        android:maxWidth="80dp"
+        android:src="@drawable/medicine" />
+
+    <TextView
+        android:id="@+id/description_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/end_time_value"
+        android:layout_below="@+id/view1"
+        android:text="@string/description_text"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/description_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/end_time_value"
+        android:layout_below="@+id/description_label"
+        android:text="nenhuma" />
+
+    <TextView
+        android:id="@+id/end_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/start_time_value"
+        android:layout_below="@+id/start_time_value"
+        android:layout_marginTop="38dp"
+        android:text="@string/end_time_text"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/start_time_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/sep_bp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="11dp"
+        android:text="@string/start_time_text"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/type_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/start_time_label"
+        android:layout_alignBottom="@+id/start_time_label"
+        android:layout_toRightOf="@+id/p_type_icon_details"
+        android:text="@string/type_text"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/warning_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/warning_label"
+        android:layout_below="@+id/warning_label"
+        android:text="0" />
+
+    <TextView
+        android:id="@+id/warning_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/end_time_value"
+        android:layout_alignLeft="@+id/hours_list"
+        android:text="@string/warning_text"
+        android:textStyle="bold" />
+
+</RelativeLayout>

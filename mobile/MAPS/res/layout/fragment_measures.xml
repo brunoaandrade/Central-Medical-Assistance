@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/gray" >
+
+      <View
+          android:id="@+id/sep_bp"
+          android:layout_width="fill_parent"
+          android:layout_height="1dp"
+          android:layout_alignParentLeft="true"
+          android:layout_below="@+id/choose_bp_sensor_label"
+          android:layout_marginTop="7dp"
+          android:background="@android:color/darker_gray" />
+
+      <TextView
+          android:id="@+id/choose_bp_sensor_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentLeft="true"
+          android:layout_alignParentTop="true"
+          android:layout_marginLeft="7dp"
+          android:layout_marginTop="7dp"
+          android:text="@string/blood_pressure_label"
+          android:textSize="16sp" />
+
+      <ImageButton
+          android:id="@+id/measures_bp_mi_button_img"
+          android:layout_width="170dp"
+          android:layout_height="100dp"
+          android:layout_alignParentRight="true"
+          android:layout_below="@+id/sep_bp"
+          android:layout_marginRight="9dp"
+          android:layout_marginTop="19dp"
+          android:maxHeight="15dp"
+          android:maxWidth="15dp"
+          android:src="@drawable/pencil_35" />
+
+      <ImageButton
+          android:id="@+id/measures_st_button_img"
+          android:layout_width="170dp"
+          android:layout_height="100dp"
+          android:layout_alignLeft="@+id/choose_temp_sensor_label"
+          android:layout_below="@+id/choose_temp_sensor_label"
+          android:layout_marginTop="23dp"
+          android:src="@drawable/tilogo" />
+
+      <View
+          android:id="@+id/sep_temp"
+          android:layout_width="fill_parent"
+          android:layout_height="1dp"
+          android:layout_alignParentLeft="true"
+          android:layout_below="@+id/measures_om_button_img"
+          android:layout_marginTop="47dp"
+          android:background="@android:color/darker_gray" />
+
+      <TextView
+          android:id="@+id/choose_temp_sensor_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBottom="@+id/sep_temp"
+          android:layout_alignLeft="@+id/measures_om_button_img"
+          android:layout_marginBottom="8dp"
+          android:text="@string/temperature_label"
+          android:textSize="16sp" />
+
+      <ImageButton
+          android:id="@+id/measures_temp_mi_button_img"
+          android:layout_width="170dp"
+          android:layout_height="100dp"
+          android:layout_alignLeft="@+id/measures_bp_mi_button_img"
+          android:layout_alignTop="@+id/measures_st_button_img"
+          android:src="@drawable/pencil_35" />
+
+      <ImageButton
+          android:id="@+id/measures_om_button_img"
+          android:layout_width="170dp"
+          android:layout_height="100dp"
+          android:layout_alignLeft="@+id/choose_bp_sensor_label"
+          android:layout_alignTop="@+id/measures_bp_mi_button_img"
+          android:cropToPadding="true"
+          android:maxHeight="15dp"
+          android:maxWidth="15dp"
+          android:src="@drawable/omron_edited_100" />
+
+      <View
+          android:id="@+id/sep_ecg"
+          android:layout_width="fill_parent"
+          android:layout_height="1dp"
+          android:layout_alignParentLeft="true"
+          android:layout_below="@+id/measures_st_button_img"
+          android:layout_marginTop="47dp"
+          android:background="@android:color/darker_gray" />
+
+      <TextView
+          android:id="@+id/choose_ecg_sensor_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignBottom="@+id/sep_ecg"
+          android:layout_alignLeft="@+id/measures_st_button_img"
+          android:layout_marginBottom="8dp"
+          android:text="@string/ecg_label"
+          android:textSize="16sp" />
+
+      <ImageButton
+          android:id="@+id/measures_vj_button_img"
+          android:layout_width="170dp"
+          android:layout_height="100dp"
+          android:layout_alignParentBottom="true"
+          android:layout_centerHorizontal="true"
+          android:layout_marginBottom="21dp"
+          android:src="@drawable/vjlogo" />
+
+</RelativeLayout>

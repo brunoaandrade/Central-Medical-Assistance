@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip" >
+
+    <ImageView
+        android:id="@+id/p_type_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="6dip"
+        android:adjustViewBounds="true"
+        android:contentDescription="TODO"
+        android:maxWidth="80dp"
+        android:src="@drawable/medicine" />
+
+    <TextView
+        android:id="@+id/drug_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/p_type_icon"
+        android:gravity="center_vertical"
+        android:text="Lorenin"
+        android:textStyle="bold"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/time_last_take"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/p_type_icon"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="13dp"
+        android:text="21/03/2012 21:00.00" />
+
+    <TextView
+        android:id="@+id/last_take"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/time_last_take"
+        android:layout_centerVertical="true"
+        android:text="Data da toma:" />
+
+</RelativeLayout>

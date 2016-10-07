@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MAPS</string>
+    <string name="title_section1">Prescrições</string>
+    <string name="title_section2">Medições</string>
+    <string name="title_section3">Histórico</string>
+    <string name="title_section4">Médico</string>
+    <string name="title_section5"><b>A minha conta</b></string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="to_activities">Prescrições</string>
+    <string name="action_settings">Definições</string>
+    <string name="section_next_take">Próxima toma:</string>
+    <string name="getPres">Get Prescription</string>
+    <string name="logout">Terminar Sessão</string>
+    <string name="sync_service"></string>
+    <string name="empty">Não existem dados a mostrar</string>
+    <string name="show_graph">Para visualizar um gráfico rode o dispositivo</string>
+    <string name="settings">Definições</string>
+    <string name="set_url">Inserir URL Servidor</string>
+	
+</resources>

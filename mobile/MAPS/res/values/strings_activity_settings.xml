@@ -1,0 +1,25 @@
+<resources>
+
+    <string name="title_activity_settings">Definições</string>
+
+    <!-- Strings related to Settings -->
+
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">Geral</string>
+    <string name="pref_title_url">URL servidor</string>
+    <string name="pref_default_url">http://</string>
+
+
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Example settings for Notifications -->
+    <string name="pref_header_sensors">Sensores</string>
+    <string name="pref_title_vitaljacket">Vital Jacket</string>
+    <string name="pref_title_vitaljacket_mac">Endereço MAC do Vital Jacket</string>
+    <string name="pref_title_omron">Omron</string>
+    <string name="pref_title_sensortag">TI Sensor Tag</string>
+    
+    
+
+</resources>

@@ -1,0 +1,18 @@
+<resources>
+
+    <string name="title_activity_login">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in_register"><b>Entrar</b></string>
+    <string name="action_sign_in_short">Entrar</string>
+    <string name="action_forgot_password">Recuperar password</string>
+    <string name="login_progress_signing_in">A entrar&#8230;</string>
+    <string name="error_invalid_email">O email inserido é inválido</string>
+    <string name="error_invalid_password">A password é demasiado pequena</string>
+    <string name="error_incorrect_password">A password está incorreta</string>
+    <string name="error_field_required">Este campo é obrigatório</string>
+    <string name="register_info">Para se registar consulte o seu médico. De momento não é possivel usar a aplicação sem registo.</string>
+
+</resources>

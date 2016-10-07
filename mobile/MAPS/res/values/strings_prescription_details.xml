@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="start_time_text">Data de inicio:</string>
+    <string name="end_time_text">Data de fim:</string>
+    <string name="type_text">Horas a fazer:</string>
+    <string name="warning_text">Acções pendentes:</string>
+    <string name="description_text">Descrição:</string>
+</resources>

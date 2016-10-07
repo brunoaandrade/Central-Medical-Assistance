@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Dados</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 70%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:scrollPanel style="width:640px;height:450px"> 
+                <p:tab id="tab4" title="Temperatura" rendered="#{main.cb.tpExistsofPrescript}">
+                    <p:chart type="line"  model="#{main.chartT}" style="height:400px;width:620px"  widgetVar="chartTemp"/> 
+                    <p:commandButton type="button1"   value="Reset Zoom" icon="ui-icon-cancel" onclick="PF('chartTemp').resetZoom()"/>  
+                </p:tab>
+            </p:scrollPanel>
+        </h:form>
+    </h:body>
+
+</html>

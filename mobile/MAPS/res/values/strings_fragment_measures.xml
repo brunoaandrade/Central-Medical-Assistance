@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="blood_pressure_label">Pressão arterial</string>
+    <string name="temperature_label">Temperatura</string>
+    <string name="ecg_label">ECG</string>
+    <string name="st_measure_text">TI Sensor Tag</string>
+    <string name="omron_measure_text">Omron</string>
+    <string name="manual_mInsertion">Manual</string>
+    <string name="save_button_text">Guardar</string>
+    <string name="nMeasure_button_text">Medir</string>
+    <string name="max_label_text">Sis:</string>
+	<string name="min_label_text">Dia:</string>
+	<string name="temp_text">Temp.:</string>
+	<string name="status_omron_text">Status:</string>
+	<string name="bpm_text">BPM:</string>
+	<string name="msg_omron_text">Msg.:</string>
+	<string name="empty_error">Insira um valor</string>
+	<string name="no_measure_error">Medição não efectuada</string>
+	<string name="value_too_low">Valor muito baixo</string>
+	<string name="value_too_high">Valor muito alto</string>
+	<string name="temp_unit_c">ºC</string>
+</resources>

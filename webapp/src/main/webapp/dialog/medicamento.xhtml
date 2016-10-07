@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Valores Perigosos</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 70%;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+        <h:form id="form">
+            <p:scrollPanel style="width:630px;height:520px"> 
+                <p:dataTable id="dt" var="car" value="#{main.actividades}" scrollWidth="5px" >
+                    <p:column headerText="Descrição">
+                        <h:outputText value="#{car.description}" />
+                    </p:column>
+                    <p:column headerText="ID Action">
+                        <h:outputText value="#{car.idAction}" />
+                    </p:column>
+                    <p:column headerText="id Actividade">
+                        <h:outputText value="#{car.idActivity}" />
+                    </p:column>
+                </p:dataTable>
+            </p:scrollPanel>
+        </h:form>
+    </h:body>
+</html>

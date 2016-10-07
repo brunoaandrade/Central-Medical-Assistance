@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Dados</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 70%;
+            }
+        </style>
+    </h:head>
+    <h:body>
+        <h:form id="form">
+            <p:scrollPanel style="width:650px;height:450px"> 
+                <p:tab id="tab5" rendered="#{main.cb.taExistsofPrescript}" title="Pressao Arterial"  >
+                    <p:chart  type="line" model="#{main.chartTA}" style="height:400px;width:620px" widgetVar="chartTA"  /> 
+                    <p:commandButton type="button4" value="Reset Zoom"  icon="ui-icon-cancel" onclick="PF('chartTA').resetZoom()"/>
+                </p:tab>
+            </p:scrollPanel>
+        </h:form>
+    </h:body>
+
+</html>

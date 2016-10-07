@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>MAPS-Perfil</title>
+            </f:facet>
+
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                    overflow:visible !important;;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+            </style>
+        </h:head>
+        <h:body>
+            <h:form prependId="false">
+                <p:button value="Index" href="index.xhtml" icon="ui-icon-home" style=" font-size: 14px"/>
+                <p:messages id="msgs" autoUpdate="true" for="email" />
+                <p:panel header="Perfil" style=" border: 0px">
+                    <h:panelGrid columns="2" columnClasses="column" cellpadding="2">
+                        <h:outputText value="Nome: " />
+                        <br></br>
+                        <h:outputText value="Primeiro: " />
+                        <h:outputText value="#{main.perfil.fname}" /> 
+                        <h:outputText value="Ultimo: " />
+                        <h:outputText value="#{main.perfil.lname}" />  
+                        <h:outputText value="Email: " />
+
+                        <p:inplace id="ajaxInplace" editor="true" >
+                            <p:inputText value="#{main.perfil.email}" required="true" label="text" />
+                        </p:inplace>
+                        <h:outputText value="ID (BD): " />
+                        <h:outputText value="#{main.perfil.idHealthCare}" />  
+                        <h:outputText value="Medico ID: " />
+                        <h:outputText value="#{main.perfil.medicalNumber}" />  
+                        <h:outputText value="Data de adição:  " />
+                        <h:outputText value="#{main.perfil.addedDate}" />          
+                    </h:panelGrid>
+
+                    <h:outputLink id="loginLink" value="javascript:void(0)" onclick="PF('dlg1').show()" title="login">   
+                        <p:graphicImage value="img/pass_icon.jpg"  height="50" width="50"  />                      
+                    </h:outputLink>  
+
+                    <p:growl id="growl" showDetail="true" life="3000" for="pass"/>  
+
+                    <p:dialog id="dialog" header="Mudar Password" widgetVar="dlg1" resizable="false">  
+                        <h:panelGrid columns="2" cellpadding="5">  
+                            <h:outputLabel for="password1" value="Introduza Passoword nova: " />  
+                            <h:inputSecret value="#{main.perfil.password1}"  id="password1" required="true" label="password" />  
+                            <h:outputLabel for="password2" value="Introduza movamente a Passoword: " />  
+                            <h:inputSecret value="#{main.perfil.password2}"  id="password2" required="true" label="password"/>  
+                            <f:facet name="footer">  
+                                <p:commandButton id="loginButton" value="Login" update="growl" actionListener="#{main.perfil.changePass}"   
+                                                 oncomplete="handleLoginRequest(xhr, status, args)"/>  
+                                <p:commandButton id="cancelButton" value="Cancelar" update="growl" actionListener="#{main.perfil.changePassCanc}"   
+                                                 oncomplete="handleLoginRequest(xhr, status, args)"/>
+                            </f:facet>  
+                        </h:panelGrid>
+                    </p:dialog>      
+                    <script type="text/javascript">
+                        function handleLoginRequest(xhr, status, args) {
+                            if (args.validationFailed || !args.loggedIn) {
+                                PF('dlg1').jq.effect("shake", {times: 5}, 100);
+                            }
+                            else {
+                                PF('dlg1').hide();
+                                $('#loginLink').fadeOut();
+                            }
+                        }
+                    </script>  
+
+                </p:panel>
+            </h:form>
+            <h:form>
+                <p:messages id="msgs1" autoUpdate="true" for="adicionarPacientes" />
+                <p:panel  style=" border: none">
+                    <p:separator style="margin-bottom:10px"/>
+                    <p:selectCheckboxMenu value="#{main.perfil.np.selectedPacientes}" label="Novos Pacientes" filter="true"  filterMatchMode="startsWith" panelStyle="width:350px" style="font-size:16px">
+                        <f:selectItems value="#{main.perfil.np.pacientesString}" />
+                    </p:selectCheckboxMenu>
+                    <br></br>
+                    <p:commandButton value="Adicionar" update="display" actionListener="#{main.perfil.np.adicionar()}" oncomplete="PF('dlg').show()"  style=" font-size: 12px"/>
+                    <p:dialog header="Pacientes Adicionados" modal="true" showEffect="fade" hideEffect="fade" widgetVar="dlg" resizable="false">
+                        <p:dataList id="display" value="#{main.perfil.np.selectedPacientes}" var="paciente">
+                            #{paciente}
+                        </p:dataList>
+                    </p:dialog>
+                </p:panel>
+            </h:form>
+        </h:body>
+    </f:view>
+</html>

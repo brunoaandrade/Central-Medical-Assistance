@@ -1,0 +1,1189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pom="http://primefaces.org/mobile">
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta http-equiv="X-UA-Compatible" content="EmulateIE8" />
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>MAPS-IN</title>
+            </f:facet>
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+            <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                    overflow:visible !important;;
+                }
+
+                .ui-layout-north .ui-layout-unit-content  {
+                    overflow:visible !important;
+                }
+                .ui-layout-north,  .ui-layout-center, .ui-layout-unit-left{
+                    border: none;
+                }
+                .coluna1 {  
+                    text-align: right;  
+                }  
+
+                .coluna2 {  
+                    text-align: center;  
+                }
+                .coluna3 {  
+                    text-align: left;  
+                }
+            </style>
+        </h:head>
+
+        <h:body>
+            <p:layout fullPage="true" >
+                <p:layoutUnit id="top"  position="north" size="75" >
+                    <h:form id="formid" onkeypress="if (event.keyCode === 13) {
+                                document.getElementById('formid:search').click();
+                                return false;
+                            }"> 
+                        <h:panelGrid columns="3"  style=" alignment-baseline:  central; alignment-adjust:  central"   >
+
+                            <h:commandLink  title="index" actionListener="#{main.dataGrid.goIndice()}"   style ="border: none; "  >   
+                                <p:graphicImage id="tab3Img" value="img/logoMini.jpg"  />                      
+                            </h:commandLink >  
+                            <h:panelGrid columns="2" style="margin-left:  200px"  >
+                                <p:inputText  style=" width: 500px; height: 25px; font-size: 22px; " value="#{main.searchBox}"  />
+                                <h:commandLink   id="search"  title="Procurar" actionListener="#{main.searchPatient()}"   style ="border: none; "  >   
+                                    <p:graphicImage value="img/search_icon.png"  height="35px"   width="70px" style ="border: none;"  />                      
+                                </h:commandLink >  
+                            </h:panelGrid>                  
+                            <p:menuButton value="#{main.nomedoutor}" style="float:right; font-size: 10px; text-align:  left; margin-left:  300px"   >
+                                <p:menuitem value="Perfil" url="/perfil.xhtml"  icon="ui-icon-person" style=" font-size: 10px" />
+                                <p:menuitem value="LogOut" icon="ui-icon-closethick" style="font-size: 10px" actionListener="#{main.logout()}" />
+                            </p:menuButton>                           
+                        </h:panelGrid>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit id="left"  position="west" size="165" style ="border: none; " >
+                    <h:panelGrid id="listaPresc1" >
+                        <h:form id="fotm44">             
+                            <h:link outcome="main" > 
+                                <p:graphicImage value="img/listPacientes.png" width="150px" height="45px"    style ="border: none;"  />     
+                            </h:link> 
+                            <h:outputLink  id="dynaButton"  title="Criar Prescrição"   style ="border: none; "  >   
+                                <p:graphicImage value="img/new_icon.jpg" width="150px" height="40px"    style ="border: none;"  />                      
+                            </h:outputLink>
+                            <p:separator />
+                            <p:separator />
+
+
+                            <h:outputText value="Pacientes em Observação" rendered="#{main.exits}" />
+                            <p:selectOneListbox id="paciente"  value="#{main.selectedState}"  rendered="#{main.exits}" style="width: 150px;"   filter="true" filterMatchMode="contains" >
+                                <f:selectItems value="#{main.states}" />
+                                <p:ajax   listener="#{main.valueChanged}"    />
+                            </p:selectOneListbox  >
+
+                            <p:menu overlay="true" trigger="dynaButton" my="left top" at="left bottom" >
+                                <p:submenu label="Medições">
+                                    <p:menuitem value="Temperatura" actionListener="#{main.prescricao.valueChangedMedicaoT}" onclick="PF('dlg2').show()"     icon=" ui-icon-pencil"/>
+                                    <p:menuitem value="Pressão Arterial" actionListener="#{main.prescricao.valueChangedMedicaoP}"  onclick="PF('dlg2').show()"     icon=" ui-icon-triangle-2-n-s"/>
+                                    <p:menuitem value="Frequência Cardíaca" actionListener="#{main.prescricao.valueChangedMedicaoF}"   onclick="PF('dlg2').show()"   icon="ui-icon-heart"/>
+                                </p:submenu>
+                                <p:submenu label="Medicamento">
+                                    <p:menuitem value="Medicamento" actionListener="#{main.prescricao.valueChangedMedicamento}"   onclick="PF('dlg3').show()"    icon="ui-icon-plusthick"/>
+                                </p:submenu>
+                                <p:submenu label="Actividade">
+                                    <p:menuitem value="Actividade"  actionListener="#{main.prescricao.valueChangedActividade}"   onclick="PF('dlg4').show()"   icon=" ui-icon-gear"/>
+                                </p:submenu>
+                            </p:menu>
+
+
+                            <p:dialog header="Nova Prescrição de Medição"  widgetVar="dlg5" appendTo="@(body)"  width="600" height="350"  resizable="false" closable="false">                 
+                                <h:panelGrid columns="2" cellpadding="5">                                
+                                    <p:wizard flowListener="#{main.prescricao.onFlowProcessM1}" widgetVar="wiz6" >
+                                        <p:tab  title="Data">
+                                            <p:panel id="dt" header="Data da Prescrição">
+
+                                                <h:outputText value="Inicio: "/>
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:calendar value="#{main.prescricao.dateInicio}" mindate="#{main.prescricao.minDate}" pattern="dd/MM/yyyy"  showOn="button" required="true" />
+                                                </h:panelGrid>
+                                                <h:outputText value="Fim: "/>
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:calendar value="#{main.prescricao.dateFim}" pattern="dd/MM/yyyy"  mindate="#{main.prescricao.minDateFim}"   showOn="button" required="true" />
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab  id="h" title="Horário">
+                                            <p:panel header="Repetições diarias">
+
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                    <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                        <p:inputText id="txt7" value="#{main.prescricao.repeticoes}" size="2"/> 
+                                                        <p:slider for="txt7" maxValue="24" minValue="1"  />
+                                                    </h:panelGrid>
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab id="o" title="Observações">
+                                            <p:panel header="Notas">
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.detalhes}"/>
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab id="c"  title="Confirmação">
+                                            <p:panel header="Confirmação">
+                                                <h:panelGrid  columns="6">
+                                                    <h:outputText   value="Tipo: "/>
+                                                    <h:outputText value="#{main.prescricao.tipoMedicaoString}"/>
+                                                    <br></br>
+                                                    <h:outputText value="Repeticoes: "/>
+                                                    <h:outputText  value="#{main.prescricao.repeticoes}"/>
+                                                    <br></br>
+                                                    <h:outputText   value="Data Inicio: "/>
+                                                    <h:outputText  value="#{main.prescricao.dateInicio}">
+                                                        <f:convertDateTime pattern="dd/MM" />
+                                                    </h:outputText>
+                                                    <br></br>
+                                                    <h:outputText   value="Data Fim: "/>
+                                                    <h:outputText  value="#{main.prescricao.dateFim}">
+                                                        <f:convertDateTime pattern="dd/MM" />
+                                                    </h:outputText>
+
+                                                </h:panelGrid>
+                                                <p:commandButton  value="Cancelar"   
+                                                                  actionListener="#{main.prescricao.cancelarPrescMedicao(actionEvent)}"   
+                                                                  oncomplete="handleRequest1(xhr, status, args);" />
+                                                <p:commandButton  value="Guardar"   
+                                                                  actionListener="#{main.prescricao.editPrescMedicao(actionEvent)}"   
+                                                                  oncomplete="handleRequest1(xhr, status, args); "/> 
+                                            </p:panel>
+                                        </p:tab>
+                                    </p:wizard>
+
+                                </h:panelGrid>  
+                            </p:dialog> 
+
+
+                            <p:dialog  header="Nova Prescrição de Medicamento" widgetVar="dlg6" appendTo="@(body)" width="600" height="350"  resizable="false" closable="false">  
+                                <h:panelGrid columns="2" cellpadding="5">                                 
+                                    <p:wizard flowListener="#{main.prescricao.onFlowProcessMed}" widgetVar="wiz7">
+                                        <p:tab title="Medicamento">
+                                            <p:panel header="Medicamento Pretendido">
+                                                <p:message for="medicamentoID1" display="icon" />
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <h:outputText value="Medicamento: "/>
+                                                    <p:inputText id="medicamentoID1"  value="#{main.prescricao.medicamento}" required="true"  />
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab  title="Data">
+                                            <p:panel header="Data da Prescrição">
+
+                                                <h:outputText value="Inicio: "/>
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:calendar value="#{main.prescricao.dateInicio}" mindate="#{main.prescricao.minDate}" pattern="dd/MM/yyyy" showOn="button" required="true" />
+                                                </h:panelGrid>
+                                                <h:outputText value="Fim: "/>
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:calendar value="#{main.prescricao.dateFim}" pattern="dd/MM/yyyy"  mindate="#{main.prescricao.minDateFim}"   showOn="button" required="true" />
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab title="Horário">
+                                            <p:panel header="Repetições diárias">
+
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                        <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                        <p:inputText id="txt6" value="#{main.prescricao.repeticoes}" size="2"/> 
+                                                        <p:slider for="txt6" maxValue="24" minValue="1" />
+                                                    </h:panelGrid>
+                                                </h:panelGrid>
+
+                                                <h:outputText value="Antes das refeições " />
+                                                <p:selectBooleanCheckbox value="#{main.prescricao.antesRefeicoes}" />
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab title="Observações">
+                                            <p:panel header="Notas">
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.detalhes}"/>
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab  title="Confirmação">
+                                            <p:panel header="Confirmação">
+                                                <h:panelGrid  columns="6">
+                                                    <h:outputText   value="Medicamento: "/>
+                                                    <h:outputText  value="#{main.prescricao.medicamento}"/>
+                                                    <br></br>
+                                                    <h:outputText   value="Repeticoes: "/>
+                                                    <h:outputText  value="#{main.prescricao.repeticoes}"/>
+                                                    <br></br>
+                                                    <h:outputText   value="Data Inicio: "/>
+                                                    <h:outputText  value="#{main.prescricao.dateInicio}">
+                                                        <f:convertDateTime pattern="dd/MM" />
+                                                    </h:outputText>
+                                                    <br></br>
+                                                    <h:outputText   value="Data Fim: "/>
+                                                    <h:outputText value="#{main.prescricao.dateFim}">
+                                                        <f:convertDateTime pattern="dd/MM" />
+                                                    </h:outputText>
+
+                                                </h:panelGrid>   
+                                                <p:commandButton  value="Cancelar"   
+                                                                  actionListener="#{main.prescricao.cancelarPrescM(actionEvent)}"   
+                                                                  oncomplete="handleRequest2(xhr, status, args);" />
+                                                <p:commandButton  value="Guardar"   
+                                                                  actionListener="#{main.prescricao.editPrescM(actionEvent)}"   
+                                                                  oncomplete="handleRequest2(xhr, status, args);" /> 
+                                            </p:panel>
+                                        </p:tab>
+                                    </p:wizard>
+                                </h:panelGrid>  
+                            </p:dialog>  
+
+
+                            <p:dialog id="a5"  header="Nova Prescrição de Actividade" widgetVar="dlg7" appendTo="@(body)" width="600" height="350"  resizable="false" closable="false">  
+                                <h:panelGrid id="a6" columns="2" cellpadding="5">                                 
+                                    <p:wizard id="a7" flowListener="#{main.prescricao.onFlowProcessA}" widgetVar="wiz8">
+                                        <p:tab title="Actividade">
+                                            <p:panel header="Actividade Pretendida">
+                                                <p:message  for="actividadeID1" display="icon" />
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <h:outputText 
+                                                        value="Actividade: "/>
+                                                    <p:inputText  id="actividadeID1"  value="#{main.prescricao.actividade}" required="true"  />
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab  title="Data">
+                                            <p:panel header="Data da actividade">
+
+                                                <h:outputText value="Inicio: "/>
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:calendar value="#{main.prescricao.dateInicio}" mindate="#{main.prescricao.minDate}" pattern="dd/MM/yyyy "  showOn="button" required="true" />
+                                                </h:panelGrid>
+                                                <h:outputText value="Fim: "/>
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:calendar value="#{main.prescricao.dateFim}" pattern="dd/MM/yyyy " mindate="#{main.prescricao.minDateFim}"   showOn="button" required="true" />
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab  title="Horário">
+                                            <p:panel header="Repetições diárias">
+
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                        <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                        <p:inputText id="txt4" value="#{main.prescricao.repeticoes}" size="2"/> 
+                                                        <p:slider for="txt4" maxValue="24" minValue="1" />
+                                                    </h:panelGrid>
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab  title="Observações">
+                                            <p:panel header="Notas">
+                                                <h:panelGrid columns="2" columnClasses="label, value">
+                                                    <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.detalhes}"/>
+                                                </h:panelGrid>
+                                            </p:panel>
+                                        </p:tab>
+                                        <p:tab id="a4" title="Confirmação">
+                                            <p:panel id="a3" header="Confirmação">
+                                                <h:panelGrid  columns="6">
+                                                    <h:outputText   value="Actividade: "/>
+                                                    <h:outputText  value="#{main.prescricao.actividade}"/>
+                                                    <br></br>
+                                                    <h:outputText   value="Repeticoes: "/>
+                                                    <h:outputText  value="#{main.prescricao.repeticoes}"/>
+                                                    <br></br>
+                                                    <h:outputText  value="Data Inicio: "/>
+                                                    <h:outputText  value="#{main.prescricao.dateInicio}">
+                                                        <f:convertDateTime pattern="dd/MM" />
+                                                    </h:outputText>
+                                                    <br></br>
+                                                    <h:outputText  value="Data Fim: "/>
+                                                    <h:outputText value="#{main.prescricao.dateFim}">
+                                                        <f:convertDateTime pattern="dd/MM" />
+                                                    </h:outputText>
+
+                                                </h:panelGrid>
+
+                                                <p:commandButton id="a2" value="Cancelar"   
+                                                                 actionListener="#{main.prescricao.cancelarPrescActivity(actionEvent)}"   
+                                                                 oncomplete="handleRequest3(xhr, status, args); "/>
+                                                <p:commandButton id="a1"  value="Guardar"  
+                                                                 actionListener="#{main.prescricao.editPrescActivity2()}"   
+                                                                 action="#{main.prescricao.editPrescActivity1()}"
+                                                                 oncomplete="handleRequest3(xhr, status, args); " /> 
+                                            </p:panel>
+                                        </p:tab>
+                                    </p:wizard>
+                                </h:panelGrid>  
+                            </p:dialog>  
+                        </h:form>
+                        <script type="text/javascript">
+                            function handleRequest1(xhr, status, args) {
+
+                                PF('dlg5').hide();
+                            }
+                            function handleRequest2(xhr, status, args) {
+
+                                PF('dlg6').hide();
+                            }
+                            function handleRequest3(xhr, status, args) {
+
+                                PF('dlg7').hide();
+                            }
+                        </script> 
+                    </h:panelGrid>
+                </p:layoutUnit>
+
+                <p:layoutUnit id="center" position="center">
+                    <p:tabView id="tabView" style="border: none;">
+                        <p:tab id="tab1" title="Informação do Paciente">
+                            <h:form>
+                                <h:panelGrid columns="2" cellpadding="15">
+                                    <p:graphicImage id="tab4Img" value="#{main.imagem}"  style=" float: top"  height="225" width="190"/>
+                                    <p:outputPanel>
+                                        <h:panelGrid columns="2" cellpadding="5">
+
+                                            <h:outputText id="tab1Text" value="Nome:"/>
+                                            <h:outputText id="dadosPaciente" value="#{main.dadospaciente}"/> 
+
+                                            <h:outputText id="tab2Text" value="Email:"/>
+                                            <h:outputText id="email" value="#{main.email}"/>
+
+                                            <h:outputText id="tab6Text"  value="Sexo: "/>
+                                            <h:outputText id="gender" value="#{main.gender}"/>
+
+                                            <h:outputText id="tab3Text" value="SSN: "/>
+                                            <h:outputText id="ssn"  value="#{main.ssn}"/>
+
+                                            <h:outputText id="tab4Text" value="ID: "/>
+                                            <h:outputText id="id" value="#{main.id}"/>
+                                            <h:outputText  value="Cidade: "/>
+                                            <h:outputText  value="#{main.city}"/>
+                                            <h:outputText  value="Idade: "/>
+                                            <h:outputText  value="#{main.born}"/>
+
+                                            <h:outputText value="Historial: " />
+                                            <h:outputText id="historial" value="#{main.history}"/>           
+                                            <br></br>
+                                            <p:graphicImage id="tabedt" value="img/edit_icon.png" onclick="PF('dlg').show()"  height="21px" width="21px"/>
+                                        </h:panelGrid>
+                                    </p:outputPanel>
+
+                                    <p:separator /><p:separator />
+                                    <h:outputText value="Paciente em Observação: " />
+                                    <p:rating   value="#{main.rating}" stars="1" >
+                                        <p:ajax event="rate" listener="#{main.onrate}"  update=":fotm44"/>
+                                        <p:ajax event="cancel"  listener="#{main.oncancel}" update=":fotm44"/>
+                                    </p:rating>
+
+
+
+                                    <p:growl id="growl" showDetail="true"  for="historia"/>
+                                    <p:dialog id="dialog" header="Historial Paciente" widgetVar="dlg" resizable="false">  
+                                        <h:panelGrid columns="2" cellpadding="5">  
+                                            <p:inputTextarea rows="4" cols="70"  autoResize="true" value="#{main.temphistory}"  />
+                                            <f:facet name="footer">  
+                                                <p:commandButton id="cancelButton" value="Cancelar"   
+                                                                 actionListener="#{main.cancelarHistorial}"   
+                                                                 oncomplete="handleLoginRequest(xhr, status, args)"/>
+                                                <p:commandButton id="okButton" value="Guardar"   
+                                                                 actionListener="#{main.editHistorial}"   
+                                                                 oncomplete="handleLoginRequest(xhr, status, args)" update="historial,growl"/> 
+                                            </f:facet>  
+                                        </h:panelGrid>  
+                                    </p:dialog> 
+                                </h:panelGrid>
+                            </h:form>
+                        </p:tab>
+
+                        <p:tab id="tab3" title="Medições" rendered="#{main.cb.graphExit}"  >
+                            <h:form>
+                                <h:panelGrid id="t4" columns="1"  >
+
+                                    <p:growl id="growl1" showDetail="true"  for="graficos"/>
+                                    <p></p>
+                                    <p:tab id="tab4" title="Temperatura" rendered="#{main.cb.taExists}">
+                                        <p:chart id="linearTemp" type="line"  model="#{main.linearModelTemp}" style="height:300px;width:800px"  widgetVar="chartTemp"/> 
+                                        <p:commandButton type="button1" value="Reset Zoom" icon="ui-icon-cancel" onclick="PF('chartTemp').resetZoom()"/>  
+                                        <p:commandButton type="button3" value="Actualizar" icon="ui-icon-refresh"  update="t4"/>  
+                                        <p:commandButton type="button2" value="Novo Valor" icon="ui-icon-circle-plus" actionListener="#{main.tempvalue()}" update="growl1"/>  
+
+                                    </p:tab>
+                                    <p></p>
+                                    <p:tab id="tab5" title="Pressão Arterial"  rendered="#{main.cb.paExists}">
+                                        <p:chart id="linearTA" type="line" model="#{main.linearModelTA}" style="height:300px;width:800px" widgetVar="chartTA"  /> 
+                                        <p:commandButton type="button4" value="Reset Zoom" icon="ui-icon-cancel" onclick="PF('chartTA').resetZoom()"/>
+                                        <p:commandButton type="button6" value="Actualizar" icon="ui-icon-refresh"  update="t4"/>  
+                                        <p:commandButton type="button5" value="Novo Valor" icon="ui-icon-circle-plus" actionListener="#{main.tavalue()}" update="growl1"/> 
+                                    </p:tab>
+
+                                </h:panelGrid>
+                            </h:form>
+                        </p:tab>
+
+                        <p:tab id="presc" title="Prescrições" >
+                            <p:commandLink  id="loginButton2" actionListener="#{main.prescricao.refreshCalendario()}"  update="gridUP" style="float:right"> 
+                                <h:graphicImage value="img/calendar_icon.png"  width="38px" height="30px" />
+                            </p:commandLink>
+
+                            <p:commandLink id="loginButton" actionListener="#{main.prescricao.tb.renderL()}"  update="listaPresc,listaPrescCalendario,gridUP" style="float:right">
+                                <h:graphicImage value="img/grid_icon.png"  width="40px" height="30px" />
+                            </p:commandLink>
+
+                            <h:panelGrid id="gridUP" columns="1" cellpadding="10">
+
+                                <h:panelGrid id="listaPresc" rendered="#{main.prescricao.tb.renderList}">
+                                    <p:graphicImage id="editicon"  value="img/new_icon.jpg" onclick="PF('dlg1').show()"  height="40px" width="175px" style=" margin-left: "/>
+                                    <br></br>
+                                    <h:form>
+                                        <p:messages id="growl22" showDetail="true" autoUpdate="true"  for="editarPrescr"/>
+                                        <p:contextMenu for="dataTable" event="click">
+                                            <p:menuitem value="Ver"  icon="ui-icon-search" update="dialog44" oncomplete="PF('prescDialog').show()" actionListener="#{main.prescricao.tb.seeDetail}"/>
+                                            <p:menuitem value="Resultados"  icon="ui-icon-search"  actionListener="#{main.openPresc()}"/>
+                                        </p:contextMenu>
+
+                                        <p:dataTable id="dataTable" var="prescriptedMeasureAction" value="#{main.prescricao.tb.prescricoes}" 
+                                                     selection="#{main.prescricao.tb.selectedPrescricoes}" selectionMode="single" rowKey="#{prescriptedMeasureAction.timeToStart}">
+                                            <p:column headerText="Nome">
+                                                <h:outputText value="#{prescriptedMeasureAction.nome}" />
+                                            </p:column>
+                                            <p:column headerText="idAction" sortBy="#{prescriptedMeasureAction.idAction}">
+                                                <h:outputText value="#{prescriptedMeasureAction.idAction}" />
+                                            </p:column>
+                                            <p:column headerText="timeToStart" sortBy="#{prescriptedMeasureAction.timeToStart}">
+                                                <h:outputText value="#{prescriptedMeasureAction.timeToStart}" />
+                                            </p:column>
+                                            <p:column headerText="actiontype" sortBy="#{prescriptedMeasureAction.actionType}">
+                                                <h:outputText value="#{prescriptedMeasureAction.actionType}" />
+                                            </p:column>
+                                            <p:column headerText="numberreps">
+                                                <h:outputText value="#{prescriptedMeasureAction.numberreps}" />
+                                            </p:column>
+                                            <p:column headerText="period">
+                                                <h:outputText value="#{prescriptedMeasureAction.period}" />
+                                            </p:column>     
+                                        </p:dataTable>
+
+                                        <p:dialog id="dialog44" header="#{main.prescricao.tb.selectedPrescricoes.idAction}" widgetVar="prescDialog" showEffect="fade" hideEffect="fade" resizable="false" closable="true">                           
+                                            <p:panelGrid  columns="2"  columnClasses="label,value">
+                                                <h:outputText value="Nome"/>
+                                                <h:outputText value="#{prescriptedMeasureAction.nome}" />
+
+                                                <h:outputText  value="idAction" />
+                                                <h:outputText value="#{prescriptedMeasureAction.idAction}" />
+
+                                                <h:outputText value="timeToStart" />
+                                                <h:outputText value="#{prescriptedMeasureAction.timeToStart}" />
+
+                                                <h:outputText value="actiontype" />
+                                                <h:outputText value="#{prescriptedMeasureAction.actionType}" />
+
+                                                <h:outputText value="numberreps"/>
+                                                <h:outputText value="#{prescriptedMeasureAction.numberreps}" />
+
+                                                <h:outputText value="period"/>
+                                                <h:outputText value="#{prescriptedMeasureAction.period}" />
+
+
+                                            </p:panelGrid>
+                                        </p:dialog>
+                                    </h:form>
+                                    <h:form>
+                                        <p:dialog id="dialog1" header="Tipo Prescrição" widgetVar="dlg1" resizable="false">  
+                                            <h:panelGrid columns="2" cellpadding="5">  
+
+                                                <h:outputText value="Opções : " />
+                                                <p:selectOneRadio id="options" value="#{main.prescricao.tipo}"   >
+                                                    <f:selectItem itemLabel="Medição     " itemValue="1" />
+                                                    <f:selectItem itemLabel="Medicamento   " itemValue="2"  />
+                                                    <f:selectItem itemLabel="Actividade " itemValue="3"  />
+                                                </p:selectOneRadio> 
+                                                <p:commandButton id="Continuar" value="Continuar"   
+                                                                 actionListener="#{main.prescricao.valueChanged}"   
+                                                                 oncomplete="handleLoginRequestPresc(xhr, status, args)"/>
+
+                                            </h:panelGrid>  
+                                        </p:dialog>                          
+                                    </h:form>
+
+                                    <p:dialog appendTo="@(body)" id="dialog2" header="Nova Prescrição de Medição" widgetVar="dlg2" width="600" height="350"  resizable="false" closable="false">                 
+                                        <h:form>
+                                            <h:panelGrid columns="2" cellpadding="5">                                 
+
+                                                <p:growl id="growl2" showDetail="true"  for="prescricoes"/>
+                                                <p:wizard flowListener="#{main.prescricao.onFlowProcessMedicao}" widgetVar="wiz" >
+                                                    <p:tab id="medicao" title="Medição">
+                                                        <p:panel header="Medição Pretendida">
+
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:selectOneRadio id="optionsMed" value="#{main.prescricao.tipoMedicao}"   >
+                                                                    <f:selectItem itemLabel="Temperatura    " itemValue="1" />
+                                                                    <f:selectItem itemLabel="Pressão Arterial" itemValue="2"  />
+                                                                    <f:selectItem itemLabel="Frequência Cardíaca" itemValue="3"  />
+                                                                </p:selectOneRadio> 
+
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="data" title="Data">
+                                                        <p:panel header="Data da Prescrição">
+
+                                                            <h:outputText value="Inicio: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.dateInicio}" mindate="#{main.prescricao.minDate}" pattern="dd/MM/yyyy" id="popupButtonCalInicio" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                            <h:outputText value="Fim: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.dateFim}" pattern="dd/MM/yyyy"  mindate="#{main.prescricao.minDateFim}"  id="popupButtonCalFim" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="repeticoes" title="Horário">
+                                                        <p:panel header="Repetições diarias">
+
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                                <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                                    <p:inputText id="txt1" value="#{main.prescricao.repeticoes}" size="2"/> 
+                                                                    <p:slider for="txt1" maxValue="24" minValue="1"  />
+                                                                </h:panelGrid>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="notas" title="Observações">
+                                                        <p:panel header="Notas">
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.detalhes}"/>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="confirm" title="Confirmação">
+                                                        <p:panel header="Confirmação">
+                                                            <h:panelGrid id="confirmation" columns="6">
+                                                                <h:outputText id="tabText5"  value="Tipo: "/>
+                                                                <h:outputText id="Medtext" value="#{main.prescricao.tipoMedicaoString}"/>
+                                                                <br></br>
+                                                                <h:outputText id="tabText8"  value="Repeticoes: "/>
+                                                                <h:outputText id="repText" value="#{main.prescricao.repeticoes}"/>
+                                                                <br></br>
+                                                                <h:outputText id="tabText6"  value="Data Inicio: "/>
+                                                                <h:outputText id="datatext" value="#{main.prescricao.dateInicio}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+                                                                <br></br>
+                                                                <h:outputText id="tabText7"  value="Data Fim: "/>
+                                                                <h:outputText id="datatext1" value="#{main.prescricao.dateFim}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+
+                                                            </h:panelGrid>
+                                                            <p:commandButton id="cancelButton1" value="Cancelar"   
+                                                                             actionListener="#{main.prescricao.cancelarPrescMedicao}"   
+                                                                             oncomplete="handleLoginRequest2(xhr, status, args); resetWizard();" update="growl2"/>
+                                                            <p:commandButton id="okButton1" value="Guardar"   
+                                                                             actionListener="#{main.prescricao.editPrescMedicao}"   
+                                                                             oncomplete="handleLoginRequest2(xhr, status, args); resetWizard();" update="growl2"/> 
+                                                        </p:panel>
+                                                    </p:tab>
+                                                </p:wizard>
+
+                                            </h:panelGrid> 
+                                        </h:form>
+                                    </p:dialog> 
+
+
+                                    <p:dialog appendTo="@(body)" id="dialog3" header="Nova Prescrição de Medicamento" widgetVar="dlg3" width="600" height="350"  resizable="false" closable="false">  
+                                        <h:form>
+                                            <h:panelGrid columns="2" cellpadding="5">                                 
+                                                <p:growl id="growl4" showDetail="true"  for="prescricoes"/>
+                                                <p:wizard flowListener="#{main.prescricao.onFlowProcessM}" widgetVar="wiz1">
+                                                    <p:tab id="medicao1" title="Medicamento">
+                                                        <p:panel header="Medicamento Pretendido">
+                                                            <p:message for="medicamentoID" display="icon" />
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <h:outputText id="medicamento"
+                                                                              value="Medicamento: "/>
+                                                                <p:inputText  id="medicamentoID" value="#{main.prescricao.medicamento}" required="true"  />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="data1" title="Data">
+                                                        <p:panel header="Data da Prescrição">
+
+                                                            <h:outputText value="Inicio: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.dateInicio}" mindate="#{main.prescricao.minDate}" pattern="dd/MM/yyyy" id="popupButtonCalInicio2" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                            <h:outputText value="Fim: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.dateFim}" pattern="dd/MM/yyyy"  mindate="#{main.prescricao.minDateFim}"  id="popupButtonCalFim2" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="repeticoes1" title="Horário">
+                                                        <p:panel header="Repetições diárias">
+
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                                    <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                                    <p:inputText id="txt2" value="#{main.prescricao.repeticoes}" size="2"/> 
+                                                                    <p:slider for="txt2" maxValue="24" minValue="1" />
+                                                                </h:panelGrid>
+                                                            </h:panelGrid>
+
+                                                            <h:outputText value="Antes das refeições " />
+                                                            <p:selectBooleanCheckbox value="#{main.prescricao.antesRefeicoes}" />
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="notas1" title="Observações">
+                                                        <p:panel header="Notas">
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.detalhes}"/>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="confirm1" title="Confirmação">
+                                                        <p:panel header="Confirmação">
+                                                            <h:panelGrid id="confirmation1" columns="6">
+                                                                <h:outputText id="tabText1"  value="Medicamento: "/>
+                                                                <h:outputText id="Medtext1" value="#{main.prescricao.medicamento}"/>
+                                                                <br></br>
+                                                                <h:outputText id="tabText"  value="Repeticoes: "/>
+                                                                <h:outputText id="repText2" value="#{main.prescricao.repeticoes}"/>
+                                                                <br></br>
+                                                                <h:outputText id="tabText2"  value="Data Inicio: "/>
+                                                                <h:outputText id="datatext2" value="#{main.prescricao.dateInicio}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+                                                                <br></br>
+                                                                <h:outputText id="tabText4"  value="Data Fim: "/>
+                                                                <h:outputText id="datatext3" value="#{main.prescricao.dateFim}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+
+                                                            </h:panelGrid>   
+                                                            <p:commandButton id="cancelButton2" value="Cancelar"   
+                                                                             actionListener="#{main.prescricao.cancelarPrescM}"   
+                                                                             oncomplete="handleLoginRequest3(xhr, status, args); resetWizard();" update="growl4"/>
+                                                            <p:commandButton id="okButton2" value="Guardar"   
+                                                                             actionListener="#{main.prescricao.editPrescM}"   
+                                                                             oncomplete="handleLoginRequest3(xhr, status, args); resetWizard();" update="growl4" /> 
+                                                        </p:panel>
+                                                    </p:tab>
+                                                </p:wizard>
+                                            </h:panelGrid>  
+                                        </h:form>
+                                    </p:dialog>  
+
+
+                                    <p:dialog appendTo="@(body)"  header="Nova Prescrição de Actividade" widgetVar="dlg4" width="600" height="350"  resizable="false" closable="false" >  
+                                        <h:form>
+                                            <h:panelGrid columns="2" cellpadding="5">                                 
+                                                <p:growl id="growl5" showDetail="true"  for="prescricoes"/>
+                                                <p:wizard flowListener="#{main.prescricao.onFlowProcessActivity}" widgetVar="wiz2">
+                                                    <p:tab id="medicao2" title="Actividade">
+                                                        <p:panel header="Actividade Pretendida">
+                                                            <p:message  for="actividadeID" display="icon" />
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <h:outputText id="actividade"
+                                                                              value="Actividade: "/>
+                                                                <p:inputText  id="actividadeID" value="#{main.prescricao.actividade}" required="true"  />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="data2" title="Data">
+                                                        <p:panel header="Data da actividade">
+
+                                                            <h:outputText value="Inicio: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.dateInicio}"  pattern="dd/MM/yyyy" id="popupButtonCalInicio1" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                            <h:outputText value="Fim: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.dateFim}" pattern="dd/MM/yyyy"  id="popupButtonCalFim1" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="repeticoes2" title="Horário">
+                                                        <p:panel header="Repetições diárias">
+
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                                    <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                                    <p:inputText id="txt3" value="#{main.prescricao.repeticoes}" size="2"/> 
+                                                                    <p:slider for="txt3" maxValue="24" minValue="1" />
+                                                                </h:panelGrid>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="notas2" title="Observações">
+                                                        <p:panel header="Notas">
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.detalhes}"/>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="confirm2" title="Confirmação">
+                                                        <p:panel header="Confirmação">
+                                                            <h:panelGrid id="confirmation2" columns="6">
+                                                                <h:outputText id="tab1Text2"  value="Actividade: "/>
+                                                                <h:outputText id="Medtext2" value="#{main.prescricao.actividade}"/>
+                                                                <br></br>
+                                                                <h:outputText id="tabText3"  value="Repeticoes: "/>
+                                                                <h:outputText id="repText4" value="#{main.prescricao.repeticoes}"/>
+                                                                <br></br>
+                                                                <h:outputText id="tab3Text1"  value="Data Inicio: "/>
+                                                                <h:outputText id="data1text3" value="#{main.prescricao.dateInicio}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+                                                                <br></br>
+                                                                <h:outputText id="tab1Text7"  value="Data Fim: "/>
+                                                                <h:outputText id="datatext6" value="#{main.prescricao.dateFim}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+
+                                                            </h:panelGrid>
+
+                                                            <p:commandButton id="cancelButton3" value="Cancelar"   
+                                                                             actionListener="#{main.prescricao.cancelarPrescActivity}"   
+                                                                             oncomplete="handleLoginRequest4(xhr, status, args); resetWizard();" update="growl5"/>
+                                                            <p:commandButton id="okButton3" value="Guardar"   
+                                                                             actionListener="#{main.prescricao.editPrescActivity}"   
+                                                                             oncomplete="handleLoginRequest4(xhr, status, args); resetWizard();" update="growl5" /> 
+                                                        </p:panel>
+                                                    </p:tab>
+                                                </p:wizard>
+                                            </h:panelGrid>  
+                                        </h:form>
+                                    </p:dialog>  
+
+
+
+                                </h:panelGrid>
+                                <h:panelGrid id="listaPrescCalendario" rendered="#{main.prescricao.tb.renderCal}" > 
+                                    <h:form>
+                                        <h:panelGrid columnClasses="value">
+                                            <p:growl id="messages" showDetail="true" for="calendario" autoUpdate="true"/>
+                                             
+                                                <p:schedule id="schedule"  value="#{main.prescricao.schedule.lazyEventModel}" widgetVar="myschedule"  resizable="true" style=" height: 500px;width: 750px"  >                 
+                                                        <p:ajax event="dateSelect" listener="#{main.prescricao.schedule.onDataSelect}" oncomplete="PF('dlgPresc').show()"  />
+                                                         <p:ajax event="eventSelect" listener="#{main.prescricao.schedule.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show()" />
+                                                       <!-- <p:ajax event="eventMove" listener="#{main.prescricao.schedule.onEventMove}" update="schedule"/> -->!
+                                                        
+                                                    </p:schedule>
+
+                                            <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip" resizable="false" height="150" width="250" >
+                                                <h:panelGrid id="eventDetails" columns="2">
+                                                    <h:outputText id="tabText12"  value="Evento: "/>
+                                                    <h:outputText id="Medtext3" value="#{main.prescricao.schedule.title}"/>
+
+                                                    <h:outputText id="tabText9"  value="Repeticoes: "/>
+                                                    <h:outputText id="repText3" value="#{main.prescricao.schedule.repeticoes}"/>
+
+                                                    <h:outputText id="tabText10"  value="Data Inicio: "/>
+                                                    <h:outputText id="datatext4" value="#{main.prescricao.schedule.dateInicio}">
+                                                        <f:convertDateTime pattern="MM/dd HH:mm" />
+                                                    </h:outputText>
+
+                                                    <h:outputText id="tabText11"  value="Data Fim: "/>
+                                                    <h:outputText id="datatext5" value="#{main.prescricao.schedule.dateFim}">
+                                                        <f:convertDateTime pattern="MM/dd HH:mm" />
+                                                    </h:outputText>
+                                                    <p:commandButton value="Resultados" actionListener="#{main.openCalPresc()}"  /> 
+
+
+                                                </h:panelGrid>
+                                            </p:dialog>
+                                        </h:panelGrid>
+                                    </h:form> 
+                                    <h:form>
+                                        <p:dialog id="dialog33" header="Tipo Prescrição" widgetVar="dlgPresc" resizable="false">  
+                                            <h:panelGrid columns="2" cellpadding="5">  
+
+                                                <h:outputText value="Opções : " />
+                                                <p:selectOneRadio id="options1" value="#{main.prescricao.schedule.presc.tipo}"   >
+                                                    <f:selectItem itemLabel="Medição     " itemValue="1" />
+                                                    <f:selectItem itemLabel="Medicamento   " itemValue="2"  />
+                                                    <f:selectItem itemLabel="Actividade " itemValue="3"  />
+                                                </p:selectOneRadio> 
+                                                <p:commandButton id="Continuar1" value="Continuar"   
+                                                                 actionListener="#{main.prescricao.schedule.presc.valueChanged}"   
+                                                                 oncomplete="handleLoginRequestPrescCal(xhr, status, args)"/>
+                                            </h:panelGrid>  
+                                        </p:dialog>                          
+
+                                    </h:form>
+
+                                    <h:form>
+                                        <p:dialog id="dialog34" header="Nova Prescrição de Medição" widgetVar="dlgPresc1" width="600" height="350"  resizable="false" closable="false">            
+                                            <h:panelGrid columns="2" cellpadding="5">                                 
+
+                                                <p:growl id="growl33" showDetail="true"  for="prescricoes"/>
+                                                <p:wizard flowListener="#{main.prescricao.schedule.presc.onFlowProcessMedicao}" widgetVar="wiz3" >
+                                                    <p:tab id="medicao33" title="Medição">
+                                                        <p:panel header="Medição Pretendida">
+
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:selectOneRadio id="optionsMed33" value="#{main.prescricao.schedule.presc.tipoMedicao}"   >
+                                                                    <f:selectItem itemLabel="Temperatura    " itemValue="1" />
+                                                                    <f:selectItem itemLabel="Pressão Arterial" itemValue="2"  />
+                                                                    <f:selectItem itemLabel=" Frequência Cardíaca" itemValue="3"  />
+                                                                </p:selectOneRadio> 
+
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="data33" title="Data">
+                                                        <p:panel header="Data da Prescrição">
+
+                                                            <h:outputText value="Inicio: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.schedule.presc.dateInicio}" mindate="#{main.prescricao.schedule.presc.minDate}" pattern="dd/MM/yyyy " id="popupButtonCalInicio33" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                            <h:outputText value="Fim: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.schedule.presc.dateFim}" pattern="dd/MM/yyyy " mindate="#{main.prescricao.schedule.presc.minDateFim}"  id="popupButtonCalFim33" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="repeticoes33" title="Horário">
+                                                        <p:panel header="Repetições diarias">
+
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                                <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                                    <p:inputText id="txt33" value="#{main.prescricao.schedule.presc.repeticoes}" size="2"/> 
+                                                                    <p:slider for="txt33" maxValue="24" minValue="1"  />
+                                                                </h:panelGrid>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="notas33" title="Observações">
+                                                        <p:panel header="Notas">
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.schedule.presc.detalhes}"/>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab id="confirm33" title="Confirmação">
+                                                        <p:panel header="Confirmação">
+                                                            <h:panelGrid id="confirmation33" columns="6">
+                                                                <h:outputText id="tabText33"  value="Tipo: "/>
+                                                                <h:outputText id="Medtext33" value="#{main.prescricao.schedule.presc.tipoMedicaoString}"/>
+                                                                <br></br>
+                                                                <h:outputText id="tabText34"  value="Repeticoes: "/>
+                                                                <h:outputText id="repText33" value="#{main.prescricao.schedule.presc.repeticoes}"/>
+                                                                <br></br>
+                                                                <h:outputText id="tabText35"  value="Data Inicio: "/>
+                                                                <h:outputText id="datatext33" value="#{main.prescricao.schedule.presc.dateInicio}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+                                                                <br></br>
+                                                                <h:outputText id="tabText36"  value="Data Fim: "/>
+                                                                <h:outputText id="datatext34" value="#{main.prescricao.schedule.presc.dateFim}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+
+                                                            </h:panelGrid>
+                                                            <p:commandButton id="cancelButton33" value="Cancelar"   
+                                                                             actionListener="#{main.prescricao.schedule.presc.cancelarPrescMedicao}"   
+                                                                             oncomplete="handleLoginRequest5(xhr, status, args); resetWizard1();" update="growl33"/>
+                                                            <p:commandButton id="okButton33" value="Guardar"   
+                                                                             actionListener="#{main.prescricao.schedule.presc.editPrescMedicao}"   
+                                                                             oncomplete="handleLoginRequest5(xhr, status, args); resetWizard1();" update="growl33"/> 
+                                                        </p:panel>
+                                                    </p:tab>
+                                                </p:wizard>
+
+                                            </h:panelGrid>  
+                                        </p:dialog> 
+                                    </h:form>
+                                    <h:form>
+                                        <p:dialog id="dialog36" header="Nova Prescrição de Medicamento" widgetVar="dlgPresc2" width="600" height="350"  resizable="false" closable="false">  
+                                            <h:panelGrid columns="2" cellpadding="5">                                 
+                                                <p:growl id="growl0" showDetail="true"  for="prescricoes"/>
+                                                <p:wizard flowListener="#{main.prescricao.schedule.presc.onFlowProcessM}" widgetVar="wiz4">
+                                                    <p:tab title="Medicamento">
+                                                        <p:panel header="Medicamento Pretendido">
+                                                            <p:message for="medicamentoId123" display="icon" />
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <h:outputText value="Medicamento: "/>
+                                                                <p:inputText  id="medicamentoId123"  value="#{main.prescricao.schedule.presc.medicamento}" required="true"  />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab title="Data">
+                                                        <p:panel header="Data da Prescrição">
+
+                                                            <h:outputText value="Inicio: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.schedule.presc.dateInicio}" mindate="#{main.prescricao.schedule.presc.minDate}" pattern="dd/MM/yyyy " showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                            <h:outputText value="Fim: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.schedule.presc.dateFim}" pattern="dd/MM/yyyy "  mindate="#{main.prescricao.schedule.presc.minDateFim}"   showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab  title="Horário">
+                                                        <p:panel header="Repetições diárias">
+
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                                    <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                                    <p:inputText id="t2" value="#{main.prescricao.schedule.presc.repeticoes}" size="2"/> 
+                                                                    <p:slider for="t2" maxValue="24" minValue="1" />
+                                                                </h:panelGrid>
+
+                                                                <h:outputText value="Antes das refeições " />
+                                                                <p:selectBooleanCheckbox value="#{main.prescricao.schedule.presc.antesRefeicoes}" />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab  title="Observações">
+                                                        <p:panel header="Notas">
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.schedule.presc.detalhes}"/>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab title="Confirmação">
+                                                        <p:panel header="Confirmação">
+                                                            <h:panelGrid  columns="6">
+                                                                <h:outputText   value="Medicamento: "/>
+                                                                <h:outputText  value="#{main.prescricao.schedule.presc.medicamento}"/>
+                                                                <br></br>
+                                                                <h:outputText   value="Repeticoes: "/>
+                                                                <h:outputText  value="#{main.prescricao.schedule.presc.repeticoes}"/>
+                                                                <br></br>
+                                                                <h:outputText  value="Data Inicio: "/>
+                                                                <h:outputText  value="#{main.prescricao.schedule.presc.dateInicio}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+                                                                <br></br>
+                                                                <h:outputText   value="Data Fim: "/>
+                                                                <h:outputText  value="#{main.prescricao.schedule.presc.dateFim}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+
+                                                            </h:panelGrid>   
+                                                            <p:commandButton value="Cancelar"   
+                                                                             actionListener="#{main.prescricao.schedule.presc.cancelarPrescM}"   
+                                                                             oncomplete="handleLoginRequest6(xhr, status, args); resetWizard1();" update="growl0"/>
+                                                            <p:commandButton  value="Guardar"   
+                                                                              actionListener="#{main.prescricao.schedule.presc.editPrescM}"   
+                                                                              oncomplete="handleLoginRequest6(xhr, status, args); resetWizard1();" update="growl0" /> 
+                                                        </p:panel>
+                                                    </p:tab>
+                                                </p:wizard>
+                                            </h:panelGrid>  
+                                        </p:dialog>  
+                                    </h:form>
+                                    <h:form>
+                                        <p:dialog  header="Nova Prescrição de Actividade" widgetVar="dlgPresc3" width="600" height="350"  resizable="false" closable="false">  
+                                            <h:panelGrid columns="2" cellpadding="5">                                 
+                                                <p:growl  id="grwol3" showDetail="true"  for="prescricoes"/>
+                                                <p:wizard flowListener="#{main.prescricao.schedule.presc.onFlowProcessActivity}" widgetVar="wiz5">
+                                                    <p:tab  title="Actividade">
+                                                        <p:panel header="Actividade Pretendida">
+                                                            <p:message  for="actividadeTxt" display="icon" />
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <h:outputText id="actividadeTxt" value="Actividade: "/>
+                                                                <p:inputText   value="#{main.prescricao.schedule.presc.actividade}" required="true"  />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab  title="Data">
+                                                        <p:panel header="Data da actividade">
+
+                                                            <h:outputText value="Inicio: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.schedule.presc.dateInicio}"   pattern="dd/MM/yyyy" showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                            <h:outputText value="Fim: "/>
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:calendar value="#{main.prescricao.schedule.presc.dateFim}" pattern="dd/MM/yyyy "   showOn="button" required="true" />
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab  title="Horário">
+                                                        <p:panel header="Repetições diárias">
+
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <h:panelGrid columns="1" style="margin-bottom:10px">
+                                                                    <img src="img/time_icon.png"  height="30" width="30" alt=""/>
+                                                                    <p:inputText id="rep3" value="#{main.prescricao.schedule.presc.repeticoes}" size="2"/> 
+                                                                    <p:slider for="rep3" maxValue="24" minValue="1" />
+                                                                </h:panelGrid>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab  title="Observações">
+                                                        <p:panel header="Notas">
+                                                            <h:panelGrid columns="2" columnClasses="label, value">
+                                                                <p:inputTextarea rows="5" cols="33" value="#{main.prescricao.schedule.presc.detalhes}"/>
+                                                            </h:panelGrid>
+                                                        </p:panel>
+                                                    </p:tab>
+                                                    <p:tab  title="Confirmação">
+                                                        <p:panel header="Confirmação">
+                                                            <h:panelGrid  columns="6">
+                                                                <h:outputText   value="Actividade: "/>
+                                                                <h:outputText  value="#{main.prescricao.schedule.presc.actividade}"/>
+                                                                <br></br>
+                                                                <h:outputText   value="Repeticoes: "/>
+                                                                <h:outputText  value="#{main.prescricao.schedule.presc.repeticoes}"/>
+                                                                <br></br>
+                                                                <h:outputText   value="Data Inicio: "/>
+                                                                <h:outputText  value="#{main.prescricao.schedule.presc.dateInicio}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+                                                                <br></br>
+                                                                <h:outputText   value="Data Fim: "/>
+                                                                <h:outputText  value="#{main.prescricao.schedule.presc.dateFim}">
+                                                                    <f:convertDateTime pattern="dd/MM" />
+                                                                </h:outputText>
+
+                                                            </h:panelGrid>
+
+                                                            <p:commandButton  value="Cancelar"   
+                                                                              actionListener="#{main.prescricao.schedule.presc.cancelarPrescActivity}"   
+                                                                              oncomplete="handleLoginRequest7(xhr, status, args); resetWizard1();" update="grwol3"/>
+                                                            <p:commandButton  value="Guardar"   
+                                                                              actionListener="#{main.prescricao.schedule.presc.editPrescActivity}"   
+                                                                              oncomplete="handleLoginRequest7(xhr, status, args); resetWizard1();" update="grwol3" /> 
+                                                        </p:panel>
+                                                    </p:tab>
+                                                </p:wizard>
+                                            </h:panelGrid>  
+                                        </p:dialog>  
+                                    </h:form>
+                                </h:panelGrid>
+                            </h:panelGrid>
+                        </p:tab>
+
+                        <p:tab id="tab6" title="Historial" >
+                            <h:panelGrid columns="1"  >
+                                <h:form>
+                                    <p:dataTable id="dataTable1" var="actions" value="#{main.prescricao.ta.action}" 
+                                                 selection="#{main.prescricao.ta.selectedActions}" selectionMode="single" rowKey="#{actions.id}">
+                                        <p:columnGroup type="header">
+                                            <p:row>         
+                                                <p:column rowspan="2" headerText="Nome"  />
+                                                <p:column rowspan="2" headerText="Data" width="10px" />
+                                                <p:column rowspan="2" headerText="ID" />
+                                                <p:column rowspan="2" headerText="Tipo" />
+                                                <p:column colspan="1" headerText="Temperatura" width="10px"/>
+                                                <p:column colspan="3" headerText="Pressao Arterial" />
+                                            </p:row>
+                                            <p:row>
+                                                <p:column colspan="1" headerText="T" />
+                                                <p:column colspan="1" headerText="D" />
+                                                <p:column colspan="1" headerText="S" />
+                                                <p:column colspan="1" headerText="Freq" />
+                                            </p:row>
+                                        </p:columnGroup>
+                                        <p:column headerText="Nome">
+                                            <h:outputText value="#{actions.name}" />
+                                        </p:column>
+                                        <p:column headerText="timeToStart">
+                                            <h:outputText value="#{actions.date}" />
+                                        </p:column>
+                                        <p:column headerText="idPrescriptact">
+                                            <h:outputText value="#{actions.id}" />
+                                        </p:column>
+
+                                        <p:column headerText="actiontype">
+                                            <h:outputText value="#{actions.at}" />
+                                        </p:column>
+                                        <p:column headerText="T">
+                                            <h:outputText value="#{actions.tempMeasure}" />
+                                        </p:column>
+                                        <p:column headerText="D">
+                                            <h:outputText value="#{actions.dMeasure}" />
+                                        </p:column>
+                                        <p:column headerText="Freq">
+                                            <h:outputText value="#{actions.fMeasure}" />
+                                        </p:column>
+                                        <p:column headerText="S">
+                                            <h:outputText value="#{actions.sMeasure}" />
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:tabView>
+                </p:layoutUnit>
+            </p:layout>
+            <script type="text/javascript">
+                function resetWizard() {
+                }
+                function resetWizard1() {
+                }
+                function handleLoginRequest(xhr, status, args) {
+                    PF('dlg').hide();
+                }
+                function handleLoginRequest1(xhr, status, args) {
+
+                    PF('dlg1').hide();
+                }
+                function handleLoginRequest2(xhr, status, args) {
+
+                    PF('dlg2').hide();
+                }
+                function handleLoginRequest3(xhr, status, args) {
+
+                    PF('dlg3').hide();
+                }
+                function handleLoginRequest4(xhr, status, args) {
+
+                    PF('dlg4').hide();
+                }
+                function handleLoginRequest5(xhr, status, args) {
+
+                    PF('dlgPresc1').hide();
+                }
+                function handleLoginRequest6(xhr, status, args) {
+
+                    PF('dlgPresc2').hide();
+                }
+                function handleLoginRequest7(xhr, status, args) {
+                    PF('dlgPresc3').hide();
+                }
+                function handleLoginRequestPresc(xhr, status, args) {
+                    PF('dlg1').hide();
+                    if (args.medicao) {
+                        PF('dlg2').show();
+                    } else if (args.actividade) {
+                        PF('dlg4').show();
+                    } else {
+                        PF('dlg3').show();
+                    }
+                }
+                function handleLoginRequestPrescCal(xhr, status, args) {
+                    PF('dlgPresc').hide();
+                    if (args.medicao) {
+                        PF('dlgPresc1').show();
+                    } else if (args.actividade) {
+                        PF('dlgPresc2').show();
+                    } else {
+                        PF('dlgPresc3').show();
+                    }
+                }
+            </script> 
+        </h:body>
+    </f:view>
+</html>
+
